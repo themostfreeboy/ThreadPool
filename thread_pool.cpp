@@ -57,7 +57,7 @@ void ThreadPool::run_task(int thread_index) {
             std::unique_lock<std::mutex> lock(_mutex);
             // while防止虚假唤醒
             while (!_quit && _tasks.empty()) {
-                _cond_var.wait(lock);
+                _cond_var.wait(lock, [this] { return _quit || !_tasks.empty(); });
             }
     
             if (_quit) {
