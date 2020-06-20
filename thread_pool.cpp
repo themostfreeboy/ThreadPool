@@ -30,8 +30,10 @@ void ThreadPool::quit() {
 }
 
 void ThreadPool::add_task(const Task& task) {
-    std::lock_guard<std::mutex> lock(_mutex);
-    _tasks.push(task);
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _tasks.push(task);
+    }
     _cond_var.notify_one();
 }
 
