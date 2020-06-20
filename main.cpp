@@ -43,6 +43,7 @@ static void rand_task() {
 int main(int argc, char** argv) {
     quit = false;
     signal(SIGINT, signalHandler);
+    signal(SIGTERM, signalHandler);
 
     srand((unsigned int)time(NULL));
 

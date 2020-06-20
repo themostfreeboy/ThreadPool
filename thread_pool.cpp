@@ -32,6 +32,10 @@ void ThreadPool::quit() {
 void ThreadPool::add_task(const Task& task) {
     {
         std::lock_guard<std::mutex> lock(_mutex);
+        if (_quit) {
+            // 程序已退出
+            return;
+        }
         _tasks.push(task);
     }
     _cond_var.notify_one();
@@ -63,6 +67,9 @@ void ThreadPool::run_task(int thread_index) {
             if (_quit) {
                 break;
             }
+
+            // 任务队列一定非空
+            assert(!_tasks.empty());
     
             task = _tasks.front();
             _tasks.pop();
