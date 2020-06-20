@@ -35,7 +35,8 @@ void ThreadPool::add_task(const Task& task) {
     _cond_var.notify_one();
 }
 
-int ThreadPool::get_thread_num() {
+int ThreadPool::get_thread_num() const {
+    // 不需要加锁
     return _pool.size();
 }
 
@@ -52,6 +53,7 @@ void ThreadPool::run_task(int thread_index) {
     while (!_quit) {
         {
             std::unique_lock<std::mutex> lock(_mutex);
+            // while防止虚假唤醒
             while (!_quit && _tasks.empty()) {
                 _cond_var.wait(lock);
             }

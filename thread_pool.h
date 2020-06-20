@@ -16,7 +16,7 @@ public:
     ~ThreadPool();
     void quit();
     void add_task(const Task& task);
-    int get_thread_num();
+    int get_thread_num() const;
     int get_task_num();
 
 private:
@@ -26,8 +26,8 @@ private:
     std::condition_variable _cond_var;
     std::atomic<bool> _quit;
     void run_task(int thread_index);
-    ThreadPool(const ThreadPool& queue) = delete;
-    ThreadPool& operator=(const ThreadPool& queue) = delete;
+    ThreadPool(const ThreadPool& thread_pool) = delete;
+    ThreadPool& operator=(const ThreadPool& thread_pool) = delete;
 };
 
 #endif

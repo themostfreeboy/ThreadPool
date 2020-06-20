@@ -36,7 +36,7 @@ static void rand_task() {
         }
     }
     std::cout << task_str;
-    // 为了保证观察效果，此处sleep一段时间
+    // 为了保证观察效果，此处sleep 1s
     usleep(1000000);
 }
 
@@ -52,9 +52,10 @@ int main(int argc, char** argv) {
     int sleep_time_us = 0;
     while (!quit) {
         thread_pool.add_task(rand_task);
-        std::cout << status_str;
-        sleep_time_us = (rand() % 200 + 1) * 1000;
+        // sleep 50 ~ 150 ms
+        sleep_time_us = (rand() % 100 + 50) * 1000;
         status_str = "task num=" + std::to_string(thread_pool.get_task_num()) + ", thread num=" + std::to_string(thread_pool.get_thread_num()) + ", sleep_time=" + std::to_string(sleep_time_us/1000) + " ms\n";
+        std::cout << status_str;
         usleep(sleep_time_us);
     }
 
